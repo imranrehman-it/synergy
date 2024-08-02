@@ -15,15 +15,19 @@ export default function Login() {
           Login to your account
         </Text>
         <Text fontSize='md' fontWeight='light' color='gray.500'>
-          Start making your dreams come true
+          Synergize your work flows for everyone
         </Text>
         <Input placeholder='Enter your email' width='full' mt='8' />
         <Button colorScheme='blue' fontWeight='semibold' fontSize='md' width='full' size='md' >
           Continue with email
         </Button>
-        <Text fontSize='md' fontWeight='light' color='gray.500' mt='2' mb='2'>
-          OR
-        </Text>
+        <div className='flex flex-row w-full gap-2 mt-2 mb-2 items-center'>
+          <div className='flex-grow bg-gray-300 h-[1px]' />
+          <Text fontSize='md' fontWeight='light' color='gray.500'>
+            OR
+          </Text>
+          <div className='flex-grow bg-gray-300 h-[1px]' />
+        </div>
         <Button leftIcon={<GoogleIcon />} fontWeight='md' width='full' size='md' >
           Continue with Google
         </Button>
