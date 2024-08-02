@@ -1,29 +1,36 @@
 'use client';
 import * as React from 'react';
 
-import { Button, ButtonGroup } from '@chakra-ui/react'
-import { Input } from '@chakra-ui/react'
-import GoogleIcon from '../../../public/googleicon.svg'
-import GithubIcon from '../../../public/githubicon.svg'
-import Logo from '../../../public/logo.svg'
+import { Button, Input, VStack, Text, Box } from '@chakra-ui/react';
+import GoogleIcon from '../../../public/googleicon.svg';
+import GithubIcon from '../../../public/githubicon.svg';
+import Logo from '../../../public/logo.svg';
 
 export default function Login() {
   return (
-    <div className='flex flex-col items-center justify-center w-screen h-screen '>
-      <div className='flex flex-col items-center w-fit'>
-        <Logo className='w-20 h-20 mb-16'/>
-        <h2 className='text-3xl font-medium leading-9 '>Login in to your account</h2>
-        <p className="text-md font-light text-gray-500 mt-4">Start making your dreams come true</p>
-        <Input placeholder='Enter your email' width='96' mt='50px'/>
-        <Button colorScheme='blue' fontWeight='semi' fontSize='md' width='96' className='mt-4' size='md'>Continue with email</Button>
-        <p className="text-md font-light text-gray-500 mt-4">OR</p>
-        <Button leftIcon={<GoogleIcon/>} fontWeight='md' width='96' className='mt-4' size='md'>Continue with Google</Button>
-        <Button leftIcon={<GithubIcon />} fontWeight='md' width='96' className='mt-4' size='md'>Continue with Github</Button>
-        
-      
-      </div>
-      
-
-    </div>
+    <Box className='flex flex-col items-center justify-center w-screen h-screen px-4'>
+      <VStack spacing={4} width={{ base: 'full', sm: 'md' }} maxW='96'>
+        <Logo className='w-20 h-20 mb-8' />
+        <Text as='h2' fontSize={{ base: '2xl', md: '3xl' }} fontWeight='medium'>
+          Login to your account
+        </Text>
+        <Text fontSize='md' fontWeight='light' color='gray.500'>
+          Start making your dreams come true
+        </Text>
+        <Input placeholder='Enter your email' width='full' mt='8' />
+        <Button colorScheme='blue' fontWeight='semibold' fontSize='md' width='full' size='md' >
+          Continue with email
+        </Button>
+        <Text fontSize='md' fontWeight='light' color='gray.500' mt='2' mb='2'>
+          OR
+        </Text>
+        <Button leftIcon={<GoogleIcon />} fontWeight='md' width='full' size='md' >
+          Continue with Google
+        </Button>
+        <Button leftIcon={<GithubIcon />} fontWeight='md' width='full' size='md' >
+          Continue with Github
+        </Button>
+      </VStack>
+    </Box>
   );
 }
