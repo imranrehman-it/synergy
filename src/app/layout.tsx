@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
-import { Spline_Sans } from "next/font/google"; 
-import {Providers} from "./providers";
+import { Spline_Sans } from "next/font/google";
+import { Providers } from "./providers";
 import "./globals.css";
-
 
 // Initialize the Spline Sans font
 const splineSans = Spline_Sans({
@@ -17,9 +16,9 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body className={splineSans.className}>
