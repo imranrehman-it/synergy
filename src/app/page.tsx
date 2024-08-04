@@ -13,6 +13,8 @@ import rehypeHighlight from 'rehype-highlight'
 import rehypeRaw from 'rehype-raw'
 import 'highlight.js/styles/github.css';
 import 'github-markdown-css/github-markdown.css';
+import { Toolbar } from '@/component/toolbar/Toolbar';
+import { m } from 'framer-motion';
 
 export default function Page() {
   const { data: session, status } = useSession();
@@ -144,37 +146,127 @@ Much more info is available in the
 ***
 
 A component by [Espen Hovlandsdal](https://espen.codes/)
+
+
 `)
+
+
+
+const compileMarkdown = (markdown) => {
+
+  const processList = (content) => {
+    // Split content by commas while ignoring commas within nested lists
+    let items = [];
+    let buffer = '';
+    let nestedLevel = 0;
+
+    for (let i = 0; i < content.length; i++) {
+      const char = content[i];
+
+      // Handle the start of a nested list
+      if (content.slice(i, i + 6) === '<list>') {
+        nestedLevel++;
+        buffer += char;
+      } else if (content.slice(i, i + 7) === '</list>') {
+        nestedLevel--;
+        buffer += char;
+      } else if (char === ',' && nestedLevel === 0) {
+        items.push(buffer.trim());
+        buffer = '';
+      } else {
+        buffer += char;
+      }
+    }
+
+    // Add the last buffer content to items
+    if (buffer.trim()) {
+      items.push(buffer.trim());
+    }
+
+    // Process each item, handling nested lists
+    const markdownList = items.map(item => {
+      if (item.startsWith('<list>')) {
+        // Recursively process nested lists
+        return processList(item.replace(/<\/?list>/g, ''));
+      } else {
+        // Convert the item to a Markdown list item
+        return `- ${item}`;
+      }
+    }).join('\n');
+
+    // Indent nested lists correctly
+    return markdownList.replace(/^/gm, '  ');
+  };
+
+  // Replace <codejs>...</codejs> with ```js...```
+  markdown = markdown.replace(/<codejs>([\s\S]*?)<\/codejs>/g, '```js\n$1\n```');
+  //Replace <codepython>...</codepython> with ```python...```
+  markdown = markdown.replace(/<codepython>([\s\S]*?)<\/codepython>/g, '```python\n$1\n```');
+  //Replace <code>...</code> with ```...```
+  markdown = markdown.replace(/<code>([\s\S]*?)<\/code>/g, '```\n$1\n```');
+
+  //replace <H1>...</H1> with #...
+  markdown = markdown.replace(/<H1>([\s\S]*?)<\/H1>/g, '# $1');
+  //replace <H2>...</H2> with ##...
+  markdown = markdown.replace(/<H2>([\s\S]*?)<\/H2>/g, '## $1');
+  //replace <H3>...</H3> with ###...
+  markdown = markdown.replace(/<H3>([\s\S]*?)<\/H3>/g, '### $1');
+  //replace <H4>...</H4> with ####...
+  markdown = markdown.replace(/<H4>([\s\S]*?)<\/H4>/g, '#### $1');
+  //replace <H5>...</H5> with #####...
+  markdown = markdown.replace(/<H5>([\s\S]*?)<\/H5>/g, '##### $1');
+  //replace <H6>...</H6> with ######...
+  markdown = markdown.replace(/<H6>([\s\S]*?)<\/H6>/g, '###### $1');
+
+  markdown = markdown.replace(/<bf>([\s\S]*?)<\/bf>/g, (_, content) => {
+    // Replace newlines within the <bf>...</bf> with spaces
+    content = content.replace(/\n/g, ' ');
+    return `**${content.trim()}**`;
+  });
+
+
+  //replace <it>...</it> with *...*
+  markdown = markdown.replace(/<it>([\s\S]*?)<\/it>/g, '*$1*');
+
+  //replace <hl>...</hl> with `...`
+  markdown = markdown.replace(/<hl>([\s\S]*?)<\/hl>/g, '`$1`');
+
+  //replace <u>..</u> with underline text
+  markdown = markdown.replace(/<u>([\s\S]*?)<\/u>/g, '<u>$1</u>');
+
+  //replace <s>...</s> with strikethrough text
+  markdown = markdown.replace(/<s>([\s\S]*?)<\/s>/g, '~~$1~~');
+
+  //replace <list>...</list> with unordered list each item is list
+  markdown = markdown.replace(/<list>([\s\S]*?)<\/list>/g, (_, content) => {
+    return processList(content);
+  });
+
+
+
+
+
+  
+  //fimd all 
+  return markdown; // For now, just return the original markdown
+};
+
 
 
 
   return (
     <div className="w-screen h-screen">
-      {/* <div className="flex flex-row w-full h-full gap-2 p-4">
-        <div className="w-[20%] h-full rounded-lg bg-slate-100 shadow-inner flex-col p-4">
-          <h1 className="text-2xl font-bold">Sidebar</h1>
-          <div className="flex-grow bg-gray-300 h-[1px] mt-2" /> 
-        </div>
-
-        <div className="w-[80%] h-full rounded-lg bg-slate-100 shadow-inner p-4">
-          <h1 className="text-2xl font-bold">Content</h1>
-          <div className="flex-grow bg-gray-300 h-[1px] mt-2" />
-
-          <div className='flex flex-col items-center justify-center w-full h-full'>
-            <div className='flex flex-row w-[90%] h-[90%] bg-green-50 rounded-lg'>
-              <div className="markdown-body w-full h-full rounded-lg p-4 overflow-scroll">
-                <Markdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight, rehypeRaw]}>{markdown}</Markdown>
-              </div>
+      <div className='flex flex-row w-full h-full'>
+          <div className="markdown-body w-full h-full overflow-scroll flex flex-row gap-5">
+          <Toolbar/>
+            <div className='flex flex-col w-full h-full'>
+              <h1 className='text-green-500 sticky'>Editor</h1>
+              <textarea className="w-full h-full bg-gray-800 text-white rounded-md p-4 resize-none" value={markdown} onChange={(e)=>setMarkdown(e.target.value)}></textarea>
             </div>
           </div>
-        </div>
-      </div> */}
-      <div className='flex flex-row w-full h-full'>
-          <div className="markdown-body w-full h-full  p-4 overflow-scroll">
-            <textarea className="w-full h-full p-4 bg-gray-800 text-white" value={markdown} onChange={(e)=>setMarkdown(e.target.value)}></textarea>
-          </div>
-          <div className="markdown-body w-full h-full  p-4 overflow-scroll">
-            <Markdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight, rehypeRaw]}>{markdown}</Markdown>
+          <div className="markdown-body w-full h-full overflow-scroll p-6">
+          <h1 className='text-green-500 sticky'>Your First Markdown File</h1>
+            <Markdown className="p-4" remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight, rehypeRaw]}>{compileMarkdown(markdown)}</Markdown>
           </div>
       </div>
       
