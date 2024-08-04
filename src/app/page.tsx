@@ -154,8 +154,8 @@ A component by [Espen Hovlandsdal](https://espen.codes/)
 
 const compileMarkdown = (markdown) => {
 
+  // Function to process <list>...</list>
   const processList = (content) => {
-    // Split content by commas while ignoring commas within nested lists
     let items = [];
     let buffer = '';
     let nestedLevel = 0;
@@ -163,7 +163,6 @@ const compileMarkdown = (markdown) => {
     for (let i = 0; i < content.length; i++) {
       const char = content[i];
 
-      // Handle the start of a nested list
       if (content.slice(i, i + 6) === '<list>') {
         nestedLevel++;
         buffer += char;
@@ -178,79 +177,88 @@ const compileMarkdown = (markdown) => {
       }
     }
 
-    // Add the last buffer content to items
     if (buffer.trim()) {
       items.push(buffer.trim());
     }
 
-    // Process each item, handling nested lists
     const markdownList = items.map(item => {
       if (item.startsWith('<list>')) {
-        // Recursively process nested lists
         return processList(item.replace(/<\/?list>/g, ''));
       } else {
-        // Convert the item to a Markdown list item
         return `- ${item}`;
       }
     }).join('\n');
 
-    // Indent nested lists correctly
     return markdownList.replace(/^/gm, '  ');
   };
 
   // Replace <codejs>...</codejs> with ```js...```
   markdown = markdown.replace(/<codejs>([\s\S]*?)<\/codejs>/g, '```js\n$1\n```');
-  //Replace <codepython>...</codepython> with ```python...```
+  // Replace <codepython>...</codepython> with ```python...```
   markdown = markdown.replace(/<codepython>([\s\S]*?)<\/codepython>/g, '```python\n$1\n```');
-  //Replace <code>...</code> with ```...```
+  // Replace <code>...</code> with ```...```
   markdown = markdown.replace(/<code>([\s\S]*?)<\/code>/g, '```\n$1\n```');
 
-  //replace <H1>...</H1> with #...
+  // Replace <H1>...</H1> with #...
   markdown = markdown.replace(/<H1>([\s\S]*?)<\/H1>/g, '# $1');
-  //replace <H2>...</H2> with ##...
+  // Replace <H2>...</H2> with ##...
   markdown = markdown.replace(/<H2>([\s\S]*?)<\/H2>/g, '## $1');
-  //replace <H3>...</H3> with ###...
+  // Replace <H3>...</H3> with ###...
   markdown = markdown.replace(/<H3>([\s\S]*?)<\/H3>/g, '### $1');
-  //replace <H4>...</H4> with ####...
+  // Replace <H4>...</H4> with ####...
   markdown = markdown.replace(/<H4>([\s\S]*?)<\/H4>/g, '#### $1');
-  //replace <H5>...</H5> with #####...
+  // Replace <H5>...</H5> with #####...
   markdown = markdown.replace(/<H5>([\s\S]*?)<\/H5>/g, '##### $1');
-  //replace <H6>...</H6> with ######...
+  // Replace <H6>...</H6> with ######...
   markdown = markdown.replace(/<H6>([\s\S]*?)<\/H6>/g, '###### $1');
 
+  // Replace <bf>...</bf> with **...**
   markdown = markdown.replace(/<bf>([\s\S]*?)<\/bf>/g, (_, content) => {
-    // Replace newlines within the <bf>...</bf> with spaces
     content = content.replace(/\n/g, ' ');
     return `**${content.trim()}**`;
   });
 
-
-  //replace <it>...</it> with *...*
+  // Replace <it>...</it> with *...*
   markdown = markdown.replace(/<it>([\s\S]*?)<\/it>/g, '*$1*');
 
-  //replace <hl>...</hl> with `...`
+  // Replace <hl>...</hl> with `...`
   markdown = markdown.replace(/<hl>([\s\S]*?)<\/hl>/g, '`$1`');
 
-  //replace <u>..</u> with underline text
+  // Replace <u>...</u> with underline text
   markdown = markdown.replace(/<u>([\s\S]*?)<\/u>/g, '<u>$1</u>');
 
-  //replace <s>...</s> with strikethrough text
+  // Replace <s>...</s> with strikethrough text
   markdown = markdown.replace(/<s>([\s\S]*?)<\/s>/g, '~~$1~~');
 
-  //replace <list>...</list> with unordered list each item is list
+  // Replace <list>...</list> with unordered list each item is list
   markdown = markdown.replace(/<list>([\s\S]*?)<\/list>/g, (_, content) => {
     return processList(content);
   });
 
+  // Replace <table><columns>...</columns><row>...</row></table> with a Markdown table
+  markdown = markdown.replace(/<table>([\s\S]*?)<\/table>/g, (_, content) => {
+    let columns = [];
+    let rows = [];
 
+    // Extract and process each <columns> and <row>
+    content.replace(/<columns>([\s\S]*?)<\/columns>/g, (_, columnsContent) => {
+      columns = columnsContent.split(',').map(col => col.trim()).filter(col => col.length > 0);
+    });
 
+    content.replace(/<row>([\s\S]*?)<\/row>/g, (_, rowContent) => {
+      const rowItems = rowContent.split(',').map(item => item.trim()).filter(item => item.length > 0);
+      rows.push(`| ${rowItems.join(' | ')} |`);
+    });
 
+    // Create the Markdown table header
+    const header = `| ${columns.join(' | ')} |`;
+    const separator = `| ${columns.map(() => '---').join(' | ')} |`;
 
-  
-  //fimd all 
-  return markdown; // For now, just return the original markdown
+    return [header, separator, ...rows].join('\n');
+  });
+
+  return markdown;
 };
-
 
 
 
