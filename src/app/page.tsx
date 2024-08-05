@@ -1,16 +1,15 @@
 // app/page.tsx
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useSession } from "next-auth/react";
-import { useEffect } from 'react';
 import {useRouter} from 'next/navigation';
+
 import Markdown from 'react-markdown';
 import remarkGfm from 'remark-gfm'
 import rehypeHighlight from 'rehype-highlight'
 import rehypeRaw from 'rehype-raw'
 import 'highlight.js/styles/github.css';
 import 'github-markdown-css/github-markdown.css';
-import { Toolbar } from '@/component/toolbar/Toolbar';
 
 import HeadingCompiler from '../../src/utils/Headings'
 import FontCompiler from '../../src/utils/FontCompiler'
@@ -32,124 +31,124 @@ export default function Page() {
   }, [status, session]);
 
   const [markdown, setMarkdown] = useState(`
-# A demo of \`react-markdown\`
+  # A demo of \`react-markdown\`
 
-\`react-markdown\` is a markdown component for React.
+  \`react-markdown\` is a markdown component for React.
 
-👉 Changes are re-rendered as you type.
+  👉 Changes are re-rendered as you type.
 
-👈 Try writing some markdown on the left.
+  👈 Try writing some markdown on the left.
 
-## Overview
+  ## Overview
 
-* Follows [CommonMark](https://commonmark.org)
-* Optionally follows [GitHub Flavored Markdown](https://github.github.com/gfm/)
-* Renders actual React elements instead of using \`dangerouslySetInnerHTML\`
-* Lets you define your own components (to render \`MyHeading\` instead of \`'h1'\`)
-* Has a lot of plugins
+  * Follows [CommonMark](https://commonmark.org)
+  * Optionally follows [GitHub Flavored Markdown](https://github.github.com/gfm/)
+  * Renders actual React elements instead of using \`dangerouslySetInnerHTML\`
+  * Lets you define your own components (to render \`MyHeading\` instead of \`'h1'\`)
+  * Has a lot of plugins
 
-## Contents
+  ## Contents
 
-Here is an example of a plugin in action
-([\`remark-toc\`](https://github.com/remarkjs/remark-toc)).
-**This section is replaced by an actual table of contents**.
+  Here is an example of a plugin in action
+  ([\`remark-toc\`](https://github.com/remarkjs/remark-toc)).
+  **This section is replaced by an actual table of contents**.
 
-## Syntax highlighting
+  ## Syntax highlighting
 
-Here is an example of a plugin to highlight code:
-[\`rehype-highlight\`](https://github.com/rehypejs/rehype-highlight).
+  Here is an example of a plugin to highlight code:
+  [\`rehype-highlight\`](https://github.com/rehypejs/rehype-highlight).
 
-\`\`\`js
-import React from 'react'
-import ReactDOM from 'react-dom'
-import Markdown from 'react-markdown'
-import rehypeHighlight from 'rehype-highlight'
+  \`\`\`js
+  import React from 'react'
+  import ReactDOM from 'react-dom'
+  import Markdown from 'react-markdown'
+  import rehypeHighlight from 'rehype-highlight'
 
-const markdown = \`
-# Your markdown here
-\`
+  const markdown = \`
+  # Your markdown here
+  \`
 
-ReactDOM.render(
-  <Markdown rehypePlugins={[rehypeHighlight]}>{markdown}</Markdown>,
-  document.querySelector('#content')
-)
-\`\`\`
+  ReactDOM.render(
+    <Markdown rehypePlugins={[rehypeHighlight]}>{markdown}</Markdown>,
+    document.querySelector('#content')
+  )
+  \`\`\`
 
-Pretty neat, eh?
+  Pretty neat, eh?
 
-## GitHub flavored markdown (GFM)
+  ## GitHub flavored markdown (GFM)
 
-For GFM, you can *also* use a plugin:
-[\`remark-gfm\`](https://github.com/remarkjs/react-markdown#use).
-It adds support for GitHub-specific extensions to the language:
-tables, strikethrough, tasklists, and literal URLs.
+  For GFM, you can *also* use a plugin:
+  [\`remark-gfm\`](https://github.com/remarkjs/react-markdown#use).
+  It adds support for GitHub-specific extensions to the language:
+  tables, strikethrough, tasklists, and literal URLs.
 
-These features **do not work by default**.
-👆 Use the toggle above to add the plugin.
-
-| Feature    | Support              |
-| ---------: | :------------------- |
-| CommonMark | 100%                 |
-| GFM        | 100% w/ \`remark-gfm\` |
-
-~~strikethrough~~
-
-* [ ] task list
-* [x] checked item
-
-https://example.com
-
-## HTML in markdown
-
-⚠️ HTML in markdown is quite unsafe, but if you want to support it, you can
-use [\`rehype-raw\`](https://github.com/rehypejs/rehype-raw).
-You should probably combine it with
-[\`rehype-sanitize\`](https://github.com/rehypejs/rehype-sanitize).
-
-<blockquote>
+  These features **do not work by default**.
   👆 Use the toggle above to add the plugin.
-</blockquote>
 
-## Components
+  | Feature    | Support              |
+  | ---------: | :------------------- |
+  | CommonMark | 100%                 |
+  | GFM        | 100% w/ \`remark-gfm\` |
 
-You can pass components to change things:
+  ~~strikethrough~~
 
-\`\`\`js
-import React from 'react'
-import ReactDOM from 'react-dom'
-import Markdown from 'react-markdown'
-import MyFancyRule from './components/my-fancy-rule.js'
+  * [ ] task list
+  * [x] checked item
 
-const markdown = \`
-# Your markdown here
-\`
+  https://example.com
 
-ReactDOM.render(
-  <Markdown
-    components={{
-      // Use h2s instead of h1s
-      h1: 'h2',
-      // Use a component instead of hrs
-      hr(props) {
-        const {node, ...rest} = props
-        return <MyFancyRule {...rest} />
-      }
-    }}
-  >
-    {markdown}
-  </Markdown>,
-  document.querySelector('#content')
-)
-\`\`\`
+  ## HTML in markdown
 
-## More info?
+  ⚠️ HTML in markdown is quite unsafe, but if you want to support it, you can
+  use [\`rehype-raw\`](https://github.com/rehypejs/rehype-raw).
+  You should probably combine it with
+  [\`rehype-sanitize\`](https://github.com/rehypejs/rehype-sanitize).
 
-Much more info is available in the
-[readme on GitHub](https://github.com/remarkjs/react-markdown)!
+  <blockquote>
+    👆 Use the toggle above to add the plugin.
+  </blockquote>
 
-***
+  ## Components
 
-A component by [Espen Hovlandsdal](https://espen.codes/)
+  You can pass components to change things:
+
+  \`\`\`js
+  import React from 'react'
+  import ReactDOM from 'react-dom'
+  import Markdown from 'react-markdown'
+  import MyFancyRule from './components/my-fancy-rule.js'
+
+  const markdown = \`
+  # Your markdown here
+  \`
+
+  ReactDOM.render(
+    <Markdown
+      components={{
+        // Use h2s instead of h1s
+        h1: 'h2',
+        // Use a component instead of hrs
+        hr(props) {
+          const {node, ...rest} = props
+          return <MyFancyRule {...rest} />
+        }
+      }}
+    >
+      {markdown}
+    </Markdown>,
+    document.querySelector('#content')
+  )
+  \`\`\`
+
+  ## More info?
+
+  Much more info is available in the
+  [readme on GitHub](https://github.com/remarkjs/react-markdown)!
+
+  ***
+
+  A component by [Espen Hovlandsdal](https://espen.codes/)
 
 
 `)
@@ -158,6 +157,10 @@ A component by [Espen Hovlandsdal](https://espen.codes/)
 
 const compileMarkdown = (markdown: string) => {
 
+  markdown = markdown.replace(/<>[\s\S]*?<\/>/g, (match) => {
+    // Remove the <> and </> delimiters
+    return match.slice(2, -3).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  });
  
   markdown = CodeSegementCompiler(markdown);
   markdown = HeadingCompiler(markdown);
@@ -187,7 +190,7 @@ const compileMarkdown = (markdown: string) => {
           <div className="markdown-body w-full h-full overflow-scroll flex flex-row gap-5">
             <div className='flex flex-col w-full h-full'>
               <h1 className='text-green-500 sticky'>Editor</h1>
-              <textarea className="w-full h-full bg-gray-800 text-white rounded-md p-4 resize-none" value={markdown} onChange={(e)=>setMarkdown(e.target.value)}></textarea>
+              <textarea className="w-full h-full bg-gray-800 text-white  p-4 resize-none" value={markdown} onChange={(e)=>setMarkdown(e.target.value)}></textarea>
             </div>
           </div>
           <div className="markdown-body w-full h-full overflow-scroll p-6">
