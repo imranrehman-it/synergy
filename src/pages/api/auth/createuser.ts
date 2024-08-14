@@ -1,5 +1,6 @@
-import pool from '../../app/db/db';
+import pool from '../../../app/db/db';
 import { NextApiRequest, NextApiResponse } from 'next';
+import { createFile } from '../../../app/db/createFile';
 
 interface User {
   id: string;
@@ -29,8 +30,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const {id, name, email, image} = req.body;
       await preCheck(req.body);
       const client = await pool.connect();
-      const result = await client.query(`INSERT INTO users (id, name, email, image) VALUES ('${id}', '${name}', '${email}', '${image}')`);
-      res.status(200).json({ message: `User ${name} added` });
+      const result = await client.query(`INSERT INTO users (id, name, email, image) VALUES ('${id}', '${name}', '${email}', '${image}') RETURNING *`);
+      const file = await createFile({user_id: id, title: 'New File', content: '<H1>Welcome to Syngergy!</H1>'});
+      const data = {user: result.rows[0], file};
+      res.status(200).json(data);
       client.release();
     } catch (err: any) {
       console.log(err);
