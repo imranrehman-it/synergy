@@ -8,7 +8,7 @@ interface File {
 
 export const createFile = async ({user_id, title, content}: File)=> {
     if(!user_id || !title || !content){
-        throw new Error('Missing required fields');
+        throw new Error('Missing required fields for file creation');
     }
     const client = await pool.connect();
     const result = await client.query(`INSERT INTO files (user_id, title, content) VALUES ('${user_id}', '${title}', '${content}') RETURNING *`);

@@ -1,6 +1,7 @@
 import pool from '../../../app/db/db';
 import { NextApiRequest, NextApiResponse } from 'next';
 import { createFile } from '../../../app/db/createFile';
+import { createUser } from '../../../app/db/createUser';
 
 interface User {
   id: string;
@@ -11,7 +12,7 @@ interface User {
 
 async function preCheck(reqBody: User){
   if(!reqBody.id || !reqBody.name || !reqBody.email || !reqBody.image){
-    throw new Error('Missing required fields');
+    throw new Error('Missing required fields for user creation');
   }
   const client = await pool.connect();
   const result = await client.query(`SELECT * FROM users WHERE id = '${reqBody.id}'`);
@@ -29,12 +30,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     try {
       const {id, name, email, image} = req.body;
       await preCheck(req.body);
-      const client = await pool.connect();
-      const result = await client.query(`INSERT INTO users (id, name, email, image) VALUES ('${id}', '${name}', '${email}', '${image}') RETURNING *`);
+      const user = await createUser({id, name, email, image});
       const file = await createFile({user_id: id, title: 'New File', content: '<H1>Welcome to Syngergy!</H1>'});
-      const data = {user: result.rows[0], file};
+      const data = {user: user, files: [file]};
       res.status(200).json(data);
-      client.release();
     } catch (err: any) {
       console.log(err);
       res.status(500).json({ error: err.message });
