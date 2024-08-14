@@ -17,6 +17,7 @@ import CodeSegementCompiler from '../../src/utils/CodeSegmentCompiler'
 import ListCompiler from '../../src/utils/ListCompiler'
 import TableCompiler from '../../src/utils/TableCompiler'
 import TextColourCompiler from '../../src/utils/TextColourCompiler'
+import { m } from 'framer-motion';
 
 
 export default function Page() {
@@ -157,10 +158,16 @@ export default function Page() {
 
 const compileMarkdown = (markdown: string) => {
 
+  //content wrapped in <e>...</e> will be redered with thier respective html tags
+  //eg <e><H1>test</H1></e> will be rendered as <H1>test</H1>
   markdown = markdown.replace(/<>[\s\S]*?<\/>/g, (match) => {
     // Remove the <> and </> delimiters
     return match.slice(2, -3).replace(/</g, '&lt;').replace(/>/g, '&gt;');
   });
+  
+  
+
+  
  
   markdown = CodeSegementCompiler(markdown);
   markdown = HeadingCompiler(markdown);
