@@ -158,6 +158,16 @@ export default function Page() {
 
 
 `)
+  const [title, setTitle] = useState('New File');
+
+  const [currentlySelectedFile, setCurrentlySelectedFile] = useState({});
+
+  const setCurrentlySelectedFileHandler = (file) => {
+    setCurrentlySelectedFile(file);
+    setMarkdown(file.content);
+    setTitle(file.title);
+
+  }
 
 
 
@@ -199,7 +209,7 @@ const compileMarkdown = (markdown: string) => {
   return (
     <div className="w-screen h-screen flex flex-row">
       <div className='flex flex-row w-full h-full'>
-      <SideBar/>
+      <SideBar setCurrentlySelectedFileHandler={setCurrentlySelectedFileHandler}/>
           <div className="markdown-body w-full h-full overflow-scroll flex flex-row ">
             <div className='flex flex-col w-full h-full bg-gray-800 p-2'>
               <h1 className='text-green-500'>Editor</h1>
@@ -207,7 +217,7 @@ const compileMarkdown = (markdown: string) => {
             </div>
           </div>
           <div className="markdown-body w-full h-full overflow-scroll p-6">
-          <h1 className='text-green-500'>Your First Markdown File</h1>
+          <h1 className='text-green-500'>{title}</h1>
             <Markdown className="p-4" remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight, rehypeRaw]}>{compileMarkdown(markdown)}</Markdown>
           </div>
       </div>

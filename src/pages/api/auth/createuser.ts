@@ -31,7 +31,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       const {id, name, email, image} = req.body;
       await preCheck(req.body);
       const user = await createUser({id, name, email, image});
-      const file = await createFile({user_id: id, title: 'New File', content: '<H1>Welcome to Syngergy!</H1>'});
+      const file = await createFile({user_id: id, title: 'New File', content: '<H1>Welcome to Syngergy!</H1>',description: 'A new file created for you'});
       const data = {user: user, files: [file]};
       res.status(200).json(data);
     } catch (err: any) {

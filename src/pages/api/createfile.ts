@@ -8,8 +8,8 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
     else{
         try{
-            const {user_id, title, content} = req.body;
-            const result = await createFile({user_id, title, content});
+            const {user_id, title, content, description} = req.body;
+            const result = await createFile({user_id, title, content, description});
             res.status(200).json(result.rows[0]);
         }
         catch(err: any){
@@ -19,3 +19,5 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
     }
 }
 };
+
+export default handler;
