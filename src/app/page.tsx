@@ -11,13 +11,18 @@ import rehypeRaw from 'rehype-raw'
 import 'highlight.js/styles/github.css';
 import 'github-markdown-css/github-markdown.css';
 
+import { RiExpandRightLine } from "react-icons/ri";
+import { RiExpandLeftLine } from 'react-icons/ri';
+
 import HeadingCompiler from '../../src/utils/Headings'
 import FontCompiler from '../../src/utils/FontCompiler'
 import CodeSegementCompiler from '../../src/utils/CodeSegmentCompiler'
 import ListCompiler from '../../src/utils/ListCompiler'
 import TableCompiler from '../../src/utils/TableCompiler'
 import TextColourCompiler from '../../src/utils/TextColourCompiler'
-import { m } from 'framer-motion';
+
+import SideBar from '../component/SideBar';
+
 
 
 export default function Page() {
@@ -192,16 +197,17 @@ const compileMarkdown = (markdown: string) => {
 
 
   return (
-    <div className="w-screen h-screen">
+    <div className="w-screen h-screen flex flex-row">
       <div className='flex flex-row w-full h-full'>
-          <div className="markdown-body w-full h-full overflow-scroll flex flex-row gap-5">
-            <div className='flex flex-col w-full h-full'>
-              <h1 className='text-green-500 sticky'>Editor</h1>
-              <textarea className="w-full h-full bg-gray-800 text-white  p-4 resize-none" value={markdown} onChange={(e)=>setMarkdown(e.target.value)}></textarea>
+      <SideBar/>
+          <div className="markdown-body w-full h-full overflow-scroll flex flex-row ">
+            <div className='flex flex-col w-full h-full bg-gray-800 p-2'>
+              <h1 className='text-green-500'>Editor</h1>
+              <textarea className="w-full h-full bg-gray-800 text-white resize-none" value={markdown} onChange={(e)=>setMarkdown(e.target.value)}></textarea>
             </div>
           </div>
           <div className="markdown-body w-full h-full overflow-scroll p-6">
-          <h1 className='text-green-500 sticky'>Your First Markdown File</h1>
+          <h1 className='text-green-500'>Your First Markdown File</h1>
             <Markdown className="p-4" remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight, rehypeRaw]}>{compileMarkdown(markdown)}</Markdown>
           </div>
       </div>
