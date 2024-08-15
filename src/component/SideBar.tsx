@@ -3,10 +3,12 @@
 import React, {useState } from 'react';
 import { RiExpandLeftLine, RiExpandRightLine } from 'react-icons/ri';
 import { FiPlusCircle } from "react-icons/fi";
+import { useSession } from "next-auth/react";
 
 const SideBar = () => {
   const [expand, setExpand] = useState(0);  
   const [isExpanded, setIsExpanded] = useState(false);
+  const { data: session, status } = useSession();
 
 
 
@@ -21,8 +23,9 @@ const SideBar = () => {
   };
 
   return (
-    <div className='h-full bg-black flex flex-rowitems-center justify-center'>
+    <div className='h-full bg-black flex flex-row items-center justify-center'>
       <div className='flex flex-col h-full transition-all duration-100 overflow-hidden' style={{ width: `${expand}vw` }}>
+        <ProfileSection />
         {isExpanded ? (
           <FilesList />
         ): null}
@@ -57,7 +60,7 @@ export default SideBar;
 
 const FilesList = () => {
   return (
-    <div className="flex flex-col w-full h-fit p-2 rounded-sm">
+    <div className="flex flex-col w-full h-fit border-t-[1px] border-dotted border-gray-600 ">
       <div className='flex flex-col gap-2 w-full'>
         <div className='flex flex-col  p-2 w-full hover:bg-gray-700'>
           <p className='text-white text-sm font-bold'>Synergy</p>
@@ -87,4 +90,17 @@ const FilesList = () => {
       
     </div>
   );
+}
+
+const ProfileSection = () => {
+  const { data: session, status } = useSession();
+  return(
+    <div className='flex flex-row p-2 items-center gap-2 mt-2 mb-4'>
+        <img src={session?.user?.user?.image} className='h-10 w-10 rounded-full'/>
+        <div className='flex flex-col'>
+          <p className='text-white text-sm font-bold capitalize'>{session?.user?.user?.name}</p>
+          <p className='text-gray-400 text-xs'>{session?.user?.user?.email}</p>
+        </div>
+      </div>
+  )
 }
