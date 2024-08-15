@@ -197,7 +197,7 @@ const compileMarkdown = (markdown: string) => {
           <div className="markdown-body w-full h-full overflow-scroll flex flex-row gap-5">
             <div className='flex flex-col w-full h-full'>
               <h1 className='text-green-500 sticky'>Editor</h1>
-              <textarea className="w-full h-full bg-gray-800 text-white  p-4 resize-none" value={JSON.stringify(session.user.files[0].content)} onChange={(e)=>setMarkdown(e.target.value)}></textarea>
+              <textarea className="w-full h-full bg-gray-800 text-white  p-4 resize-none" value={markdown} onChange={(e)=>setMarkdown(e.target.value)}></textarea>
             </div>
           </div>
           <div className="markdown-body w-full h-full overflow-scroll p-6">
