@@ -10,6 +10,7 @@ export const getUserData = async (user_id: string) => {
         const user = await client.query(`SELECT * FROM users WHERE id = '${user_id}'`);
         const files = await getUserFiles(user_id);
         const data = {user: user.rows[0], files: files};
+        client.release();
         return data;
     }
     catch(err: any){

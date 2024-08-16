@@ -1,6 +1,6 @@
-import NextAuth, { NextAuthOptions } from "next-auth"
-import GithubProvider from "next-auth/providers/github"
-import GoogleProvider from "next-auth/providers/google"
+import NextAuth, { NextAuthOptions } from "next-auth";
+import GithubProvider from "next-auth/providers/github";
+import GoogleProvider from "next-auth/providers/google";
 import { JWT } from "next-auth/jwt";
 
 interface AuthenticatedUser {
@@ -8,6 +8,7 @@ interface AuthenticatedUser {
   name: string;
   email: string;
   image: string;
+  additionalData?: any; // Add a field for additional data
 }
 
 const authOptions: NextAuthOptions = {
@@ -32,56 +33,58 @@ const authOptions: NextAuthOptions = {
 
     async signIn({ user, account, profile, email, credentials }: { user: any; account: any; profile?: any; email?: { verificationRequest?: boolean } | undefined; credentials?: any }) {
       console.log("SignIn callback:", { user, account, profile, email, credentials });
-      const authenticatedUser = user as AuthenticatedUser;
-      const userId = authenticatedUser.id;
       try {
-        console.log('Adding user:', authenticatedUser);
-        console.log('User added successfully');
+        // Additional logic (if needed)
         return true;
       } catch (error) {
-        console.error('Error signing in user:', error);
+        console.error('Error during sign-in:', error);
         return false;
       }
     },
 
     async jwt({ token, user }: { token: JWT, user?: any }) {
       console.log("JWT callback:", { token, user });
-      if (user?.id) {
+      if (user) {
         token.id = user.id;
-      }
-      if (user?.name) {
-        token.userName = user.name;
+        token.name = user.name;
+        token.email = user.email;
+        token.picture = user.image;
+
+        // Fetch additional user data
+        try {
+          const userDataResponse = await fetch('http://localhost:3000/api/auth/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              id: user.id,
+              name: user.name,
+              email: user.email,
+              image: user.image,
+            }),
+          });
+
+          if (userDataResponse.ok) {
+            const additionalData = await userDataResponse.json();
+            token.additionalData = additionalData; // Store additional data in the token
+          }
+        } catch (error) {
+          console.error('Error fetching additional user data:', error);
+        }
       }
       return token;
     },
 
-    async session({ session, token }: { session: any; token: any;}) {
-     try{
-        const userData = await fetch('http://localhost:3000/api/auth/login', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            id: token.id,
-            name: token.name,
-            email: token.email,
-            image: token.picture,
-          }),
-        });
-
-        const data = await userData.json();
-        session.user = data;
-        return session;
-
-     }
-      catch(err: any){
-        console.log(err);
-      }
-      
+    async session({ session, token }: { session: any; token: any; }) {
+      // Pass additional data to the session
+      session.user = {
+        ...session.user,
+        additionalData: token.additionalData,
+      };
+      return session;
     },
+  },
+};
 
-}
-}
-
-export default NextAuth(authOptions)
+export default NextAuth(authOptions);
