@@ -1,0 +1,49 @@
+import React from 'react'
+import { useState } from 'react';
+
+import { RiExpandLeftLine, RiExpandRightLine } from 'react-icons/ri';
+import { FiSave } from 'react-icons/fi';
+
+import FunctionIcon from './FunctionIcon';
+
+const CustomFunctions = ({setMarkdown} : {setMarkdown: (arg0: string) => void}) => {
+    const [functionList, setFunctionList] = useState(
+        [
+            {value: '<H1/>', template: '<H1>Heading 1</H1>'},
+            {value: '<H2/>', template: '<H2>Heading 2</H2>'},
+            {value: '<H3/>', template: '<H3>Heading 3</H3>'},
+            {value: '<H4/>', template: '<H4>Heading 4</H4>'},
+            {value: '<H5/>', template: '<H5>Heading 5</H5>'},
+            {value: '<H6/>', template: '<H6>Heading 6</H6>'},
+            {value: '<bf/>', template: '<bf>Bold</bf>'},
+            {value: '<it/>', template: '<it>Italic</it>'},
+            {value: '<u/>', template: '<u>Unerline</u>'},
+            {value : '<hl/>', template: '<hl>Highlight</hl>'},
+            {value: '<s/>', template: '<s>Strike</s>'},
+            {value: '<codejs/>', template: '<codejs>Code JS</codejs>'},
+            {value: '<codepython/>', template: '<codepython>Code Python</codepython>'},
+
+        ]
+    );
+
+
+  return (
+    <div className="flex flex-col h-[30%] w-full bg-gray-800 p-2">
+    <div className='flex flex-row bg-gray-700 h-10 rounded-t-lg items-center p-2 w-full'>
+        <div className='absolute flex flex-row gap-2'>
+          <RiExpandLeftLine className='text-white text-md cursor-pointer bg-red-400 rounded-lg'/>
+          <RiExpandRightLine className='text-white text-md cursor-pointer bg-blue-400 rounded-lg'/>
+          <FiSave className='text-white text-md cursor-pointer bg-green-400 rounded-lg'/>
+        </div>
+         <p className='text-white font-bold w-full text-center'>Custom Function</p>
+        </div>
+        <div className="w-full h-full bg-black flex flex-wrap p-2 gap-2">
+            {functionList.map((func) => (
+                <FunctionIcon key={func.value} value={func.value} template={func.template} setMarkdown={setMarkdown}/>
+            ))}
+        </div>
+    </div>
+  )
+}
+
+export default CustomFunctions

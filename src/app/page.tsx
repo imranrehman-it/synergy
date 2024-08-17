@@ -11,12 +11,11 @@ import 'highlight.js/styles/github.css';
 import 'github-markdown-css/github-markdown.css';
 import { FiSave } from 'react-icons/fi';
 import { RiExpandLeftLine, RiExpandRightLine } from 'react-icons/ri';
-
-
-
 import { compileMarkdown } from '@/utils/MarkdownCompliler';
 
 import SideBar from '../component/SideBar';
+import CustomFunctions from '../component/functions/CustomFunctions';
+import { time } from 'console';
 
 
 export default function Page() {
@@ -120,6 +119,20 @@ export default function Page() {
     }
   };
 
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      saveFile();
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [markdown]);
+
+  const handleCustomFunction = () =>{
+    setMarkdown(prev => prev + '\n<H1>Heading H1</H1>');
+  }
+
   
 
 
@@ -127,7 +140,7 @@ export default function Page() {
     <div className="w-screen h-screen flex flex-row">
       <div className='flex flex-row w-full h-full'>
         <SideBar setCurrentlySelectedFileHandler={setCurrentlySelectedFileHandler} files={files} />
-        <div className="w-full h-full overflow-scroll flex flex-row ">
+        <div className="w-full h-full overflow-scroll flex flex-col">
           <div className='flex flex-col w-full h-full bg-gray-800 p-2'>
             <div className='flex flex-row bg-gray-700 h-10 rounded-t-lg items-center p-2'>
               <div className='absolute flex flex-row gap-2'>
@@ -144,6 +157,9 @@ export default function Page() {
               onChange={(e)=>setMarkdown(e.target.value)} 
             />
           </div>
+          <CustomFunctions setMarkdown={setMarkdown} />
+
+
         </div>
         <div className="w-full h-full overflow-scroll flex flex-row ">
           <div className='flex flex-col w-full h-full bg-gray-800 p-2'>
