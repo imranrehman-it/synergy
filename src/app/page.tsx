@@ -12,6 +12,8 @@ import 'github-markdown-css/github-markdown.css';
 import { FiSave } from 'react-icons/fi';
 import { RiExpandLeftLine, RiExpandRightLine } from 'react-icons/ri';
 import { compileMarkdown } from '@/utils/MarkdownCompliler';
+import { Circles } from 'react-loader-spinner'
+
 
 import SideBar from '../component/SideBar';
 import CustomFunctions from '../component/functions/CustomFunctions';
@@ -45,6 +47,8 @@ export default function Page() {
   
     ## Overview
     ...`);
+
+  const [saved, setSaved] = useState(true);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -113,6 +117,7 @@ export default function Page() {
       });
 
       const data = await response.json();
+      setSaved(true);
       setCurrentlySelectedFile(data);
     } catch (err) {
       console.log(err);
@@ -120,6 +125,7 @@ export default function Page() {
   };
 
   useEffect(() => {
+    setSaved(false);
     const timeout = setTimeout(() => {
       saveFile();
     }, 1000);
@@ -149,8 +155,9 @@ export default function Page() {
                 <FiSave className='text-white text-md cursor-pointer bg-green-400 rounded-lg' onClick={saveFile}/>
               </div>
                <p className='text-white font-bold w-full text-center'>{title}</p>
+               {!saved  ? (<Circles color='#ffffff' height="20" width="20"/>) : (<p className='text-gray-400 text-sm'>Saved</p>)}
             </div>
-
+            
             <textarea 
               className="w-full h-full bg-black text-white p-4 text-sm leading-relaxed font-mono focus:outline-none focus:none focus:ring-blue-500 resize-none font-bold" 
               value={markdown}

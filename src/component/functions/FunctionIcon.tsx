@@ -14,3 +14,4 @@ const FunctionIcon = ({value, template, setMarkdown}: {value: string, template: 
 }
 
 export default FunctionIcon
+
