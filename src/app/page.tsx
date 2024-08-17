@@ -9,6 +9,10 @@ import rehypeHighlight from 'rehype-highlight';
 import rehypeRaw from 'rehype-raw';
 import 'highlight.js/styles/github.css';
 import 'github-markdown-css/github-markdown.css';
+import { FiSave } from 'react-icons/fi';
+import { RiExpandLeftLine, RiExpandRightLine } from 'react-icons/ri';
+
+
 
 import { compileMarkdown } from '@/utils/MarkdownCompliler';
 
@@ -88,14 +92,7 @@ export default function Page() {
     
   }, [session, currentlySelectedFile, ]);
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      saveFile();
-    }, 500);
-    return () => {
-      clearTimeout(timer);
-    }
-  }, [markdown]);
+  
 
   
 
@@ -130,23 +127,43 @@ export default function Page() {
     <div className="w-screen h-screen flex flex-row">
       <div className='flex flex-row w-full h-full'>
         <SideBar setCurrentlySelectedFileHandler={setCurrentlySelectedFileHandler} files={files} />
-        <div className="markdown-body w-full h-full overflow-scroll flex flex-row ">
+        <div className="w-full h-full overflow-scroll flex flex-row ">
           <div className='flex flex-col w-full h-full bg-gray-800 p-2'>
-            <h1 className='text-green-500'>Editor</h1>
+            <div className='flex flex-row bg-gray-700 h-10 rounded-t-lg items-center p-2'>
+              <div className='absolute flex flex-row gap-2'>
+                <RiExpandLeftLine className='text-white text-md cursor-pointer bg-red-400 rounded-lg'/>
+                <RiExpandRightLine className='text-white text-md cursor-pointer bg-blue-400 rounded-lg'/>
+                <FiSave className='text-white text-md cursor-pointer bg-green-400 rounded-lg' onClick={saveFile}/>
+              </div>
+               <p className='text-white font-bold w-full text-center'>{title}</p>
+            </div>
+
             <textarea 
-              className="w-full h-full bg-gray-800 text-white resize-none" 
+              className="w-full h-full bg-black text-white p-4 text-sm leading-relaxed font-mono focus:outline-none focus:none focus:ring-blue-500 resize-none font-bold" 
               value={markdown}
               onChange={(e)=>setMarkdown(e.target.value)} 
             />
-            <button onClick={saveFile}>Save</button>
           </div>
         </div>
-        <div className="markdown-body w-full h-full overflow-scroll p-6">
-          <h1 className='text-green-500'>{title}</h1>
-            <Markdown className="p-4" remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight, rehypeRaw]}>
+        <div className="w-full h-full overflow-scroll flex flex-row ">
+          <div className='flex flex-col w-full h-full bg-gray-800 p-2'>
+            <div className='flex flex-row bg-gray-700 h-10 rounded-t-lg items-center p-2'>
+              <div className='absolute flex flex-row gap-2'>
+                <RiExpandLeftLine className='text-white text-md cursor-pointer bg-red-400 rounded-lg'/>
+                <RiExpandRightLine className='text-white text-md cursor-pointer bg-blue-400 rounded-lg'/>
+                <FiSave className='text-white text-md cursor-pointer bg-green-400 rounded-lg' onClick={saveFile}/>
+              </div>
+               <p className='text-white font-bold w-full text-center'>Markdown Render</p>
+            </div>
+
+            <div className="markdown-body w-full h-full overflow-scroll p-6">
+            <Markdown className="p-4 " remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeHighlight, rehypeRaw]}>
             {compileMarkdown(markdown)}
           </Markdown>
         </div>
+          </div>
+        </div>
+       
       </div>
     </div>
   );

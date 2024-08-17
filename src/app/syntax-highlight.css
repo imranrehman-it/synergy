@@ -1,0 +1,126 @@
+/* Basic styling for the textarea */textarea.syntax-highlight {
+    width: 100%;
+    height: 100%;
+    background-color: #1e1e1e; /* Dark background */color: #d4d4d4; /* Light text */font-family: 'Fira Code', monospace; /* Monospaced font for coding */padding: 10px;
+    border: none;
+    outline: none;
+    resize: none;
+    border-radius: 5px;
+    line-height: 1.6;
+}
+
+/* Highlight and text styles */.hl {
+    background-color: #fffb8f; /* Light yellow background for highlight */color: #000;
+}
+
+.bf {
+    font-weight: bold;
+    color: #ff4c4c; /* Bold text with red color */
+}
+
+.u {
+    text-decoration: underline;
+}
+
+.s {
+    text-decoration: line-through;
+    color: #808080; /* Strikethrough with gray color */
+}
+
+.it {
+    font-style: italic;
+    color: #6a5acd; /* Italics with blue color */
+}
+
+/* Text color classes */.red {
+    color: #ff4c4c;
+}
+
+.blue {
+    color: #4c6fff;
+}
+
+.green {
+    color: #4cff6f;
+}
+
+.yellow {
+    color: #ffeb3b;
+}
+
+.orange {
+    color: #ffa500;
+}
+
+.purple {
+    color: #9b59b6;
+}
+
+/* Code segments */code, .codejs, .codepython {
+    display: block;
+    background-color: #2e2e2e; /* Darker background for code blocks */color: #f8f8f2; /* Light color for text */padding: 10px;
+    border-radius: 5px;
+    margin: 10px0;
+    overflow-x: auto;
+    font-size: 0.9em;
+}
+
+/* Syntax highlighting for JavaScript */.codejs {
+    color: #f1fa8c;
+}
+
+.codejs.keyword {
+    color: #ff79c6;
+}
+
+.codejs.function {
+    color: #50fa7b;
+}
+
+/* Syntax highlighting for Python */.codepython {
+    color: #ff79c6;
+}
+
+.codepython.keyword {
+    color: #bd93f9;
+}
+
+.codepython.function {
+    color: #50fa7b;
+}
+
+/* General code block styling */code {
+    font-family: 'Fira Code', monospace;
+}
+
+/* Ordered and unordered lists */ol {
+    padding-left: 20px;
+    color: #d4d4d4;
+}
+
+olli {
+    margin: 5px0;
+}
+
+/* Table styling */table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px0;
+}
+
+tableth,
+tabletd {
+    border: 1px solid #444;
+    padding: 8px;
+    text-align: left;
+    color: #d4d4d4;
+}
+
+tableth {
+    background-color: #2c2c2c;
+    font-weight: bold;
+}
+
+tabletr:nth-child(even) {
+    background-color: #333;
+}
