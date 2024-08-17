@@ -7,6 +7,9 @@ import { FiSave } from 'react-icons/fi';
 import FunctionIcon from './FunctionIcon';
 
 const CustomFunctions = ({setMarkdown} : {setMarkdown: (arg0: string) => void}) => {
+
+    const tableTemplate = '<table>\n<columns>Col1, Col2, Col3,</columns>\n<row>item1, item2, item3</row>\n<row>item4, item5, item6</row>\n<row>item7, item8, item9</row>\n</table>';
+
     const [functionList, setFunctionList] = useState(
         [
             {value: '<H1/>', template: '<H1>Heading 1</H1>'},
@@ -27,8 +30,8 @@ const CustomFunctions = ({setMarkdown} : {setMarkdown: (arg0: string) => void}) 
             {value: '<blue/>', template: '<blue>Blue</blue>'},
             {value: '<yellow/>', template: '<yellow>Yellow</yellow>'},
             {value: '<purple/>', template: '<purple>Purple</purple>'},
-            
-
+            {value: '<list/>', template: '<list>item1, item2, item3</list>'},
+            {value: '<table/>', template: '\n<table>\n<columns>Col1, Col2, Col3,</columns>\n<row>item1, item2, item3</row>\n<row>item4, item5, item6</row>\n<row>item7, item8, item9</row>\n</table>'},
         ]
     );
 
