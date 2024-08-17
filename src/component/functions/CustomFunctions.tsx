@@ -5,10 +5,10 @@ import { RiExpandLeftLine, RiExpandRightLine } from 'react-icons/ri';
 import { FiSave } from 'react-icons/fi';
 
 import FunctionIcon from './FunctionIcon';
+import CreateFunctionModal from './CreateFunctionModal';
 
 const CustomFunctions = ({setMarkdown} : {setMarkdown: (arg0: string) => void}) => {
-
-    const tableTemplate = '<table>\n<columns>Col1, Col2, Col3,</columns>\n<row>item1, item2, item3</row>\n<row>item4, item5, item6</row>\n<row>item7, item8, item9</row>\n</table>';
+    const [close, setClose] = useState(true);
 
     const [functionList, setFunctionList] = useState(
         [
@@ -35,9 +35,15 @@ const CustomFunctions = ({setMarkdown} : {setMarkdown: (arg0: string) => void}) 
         ]
     );
 
+    const addNewFunction = (value: string, template: string) => {
+        setFunctionList(prev => [...prev, {value, template}]);
+        setClose(false);
+    }
+    
 
   return (
     <div className="flex flex-col h-[30%] w-full bg-gray-800 p-2">
+    {close && <CreateFunctionModal addNewFunction={addNewFunction} />}
     <div className='flex flex-row bg-gray-700 h-10 rounded-t-lg items-center p-2 w-full'>
         <div className='absolute flex flex-row gap-2'>
           <RiExpandLeftLine className='text-white text-md cursor-pointer bg-red-400 rounded-lg'/>
