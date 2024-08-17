@@ -56,7 +56,7 @@ const CustomFunctions = ({setMarkdown} : {setMarkdown: (arg0: string) => void}) 
         </div>
          <p className='text-white font-bold w-full text-center'>Custom Function</p>
         </div>
-        <div className="w-full h-full bg-black flex flex-wrap p-2 gap-2">
+        <div className="w-full h-full bg-black flex flex-wrap p-2 gap-2 mb-2 rounded">
             {functionList.map((func) => (
                 <FunctionIcon key={func.value} value={func.value} template={func.template} setMarkdown={setMarkdown}/>
             ))}

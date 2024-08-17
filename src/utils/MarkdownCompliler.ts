@@ -34,7 +34,7 @@ const compileMarkdown = (markdown: string) => {
       return `[${text}](${url})`;
     });
 
-    console.log(markdown);
+    console.log(markdown.toString());
 
     return markdown;
   };
