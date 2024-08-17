@@ -11,9 +11,6 @@ const CreateFunctionModal = ({addNewFunction} : (value: string, template:string)
     const [markdown, setMarkdown] = useState(`<H1>Heading 1</H1>`);
     const [functionTag, setFunctionTag] = useState('');
 
-    const handleSetFunctionTag = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFunctionTag(`<${e.target.value}/>`);
-    }
   return (
      <div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center'>
         <div className=" flex flex-col w-1/2 h-1/2 bg-gray-700 rounded-md p-4">
@@ -27,7 +24,7 @@ const CreateFunctionModal = ({addNewFunction} : (value: string, template:string)
                     onChange={(e)=>setMarkdown(e.target.value)} 
                 />
                 <div className='flex flex-row w-full'>
-                    <input onChange={(e)=>handleSetFunctionTag(e)} type="text" placeholder="Function Tag ie <newfunction>" className="bg-black rounded-md text-white p-4 text-sm leading-relaxed font-mono focus:outline-none focus:none focus:ring-blue-500 resize-none font-bold"/>  
+                    <input onChange={(e)=>setFunctionTag(e.target.value)} type="text" placeholder="Function Tag ie <newfunction>" className="bg-black rounded-md text-white p-4 text-sm leading-relaxed font-mono focus:outline-none focus:none focus:ring-blue-500 resize-none font-bold"/>  
                     <button onClick={()=>addNewFunction(functionTag, markdown)} className='bg-green-400 text-white p-2 rounded-md'>Add</button>
                 </div>
 

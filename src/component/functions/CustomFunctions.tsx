@@ -6,6 +6,7 @@ import { FiSave } from 'react-icons/fi';
 
 import FunctionIcon from './FunctionIcon';
 import CreateFunctionModal from './CreateFunctionModal';
+import { addFunction } from '@/utils/MarkdownCompliler';
 
 const CustomFunctions = ({setMarkdown} : {setMarkdown: (arg0: string) => void}) => {
     const [close, setClose] = useState(true);
@@ -36,7 +37,10 @@ const CustomFunctions = ({setMarkdown} : {setMarkdown: (arg0: string) => void}) 
     );
 
     const addNewFunction = (value: string, template: string) => {
-        setFunctionList(prev => [...prev, {value, template}]);
+        console.log('value', value, template);
+        const tag = `<${value}/>`;
+        addFunction(value, template);
+        setFunctionList(prev => [...prev, {value: tag, template: template}]);
         setClose(false);
     }
     

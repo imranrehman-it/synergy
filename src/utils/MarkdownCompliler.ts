@@ -6,10 +6,21 @@ import ListCompiler from '../../src/utils/ListCompiler';
 import TableCompiler from '../../src/utils/TableCompiler';
 import TextColourCompiler from '../../src/utils/TextColourCompiler';
 
-export const compileMarkdown = (markdown: string) => {
-    markdown = markdown.replace(/<>[\s\S]*?<\/>/g, (match) => {
-      return match.slice(2, -3).replace(/</g, '&lt;').replace(/>/g, '&gt;');
+let customFunctions = { 
+    'br': '<bf><red>{content}</red></bf>',
+    'name': '<bf>Imran</bf>'
+};
+
+
+const compileMarkdown = (markdown: string) => {
+    
+    Object.keys(customFunctions).forEach((tag) => {
+        markdown = markdown.replace(new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`, 'g'), (_, content) => {
+            return customFunctions[tag].replace('{content}', content);
+        });
     });
+   
+
 
     markdown = CodeSegementCompiler(markdown);
     markdown = HeadingCompiler(markdown);
@@ -27,3 +38,14 @@ export const compileMarkdown = (markdown: string) => {
 
     return markdown;
   };
+
+const addFunction = (tag: string, template: string) =>{
+    console.log(tag, template);
+    customFunctions[tag] = template;
+    console.log(customFunctions);
+}
+
+export {
+    compileMarkdown,
+    addFunction
+};

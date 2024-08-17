@@ -17,6 +17,9 @@ export const FontCompiler = (markdown: string): string =>{
   // Replace <s>...</s> with strikethrough text
   markdown = markdown.replace(/<s>([\s\S]*?)<\/s>/g, '~~$1~~');
 
+  // Replace <rb>...</rb> with <red><bf>...</bf></red>
+  markdown = markdown.replace(/<rb>([\s\S]*?)<\/rb>/g, '<red><bf>$1</bf></red>');
+
   return markdown;
 }
 
