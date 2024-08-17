@@ -22,6 +22,12 @@ const CustomFunctions = ({setMarkdown} : {setMarkdown: (arg0: string) => void}) 
             {value: '<s/>', template: '<s>Strike</s>'},
             {value: '<codejs/>', template: '<codejs>Code JS</codejs>'},
             {value: '<codepython/>', template: '<codepython>Code Python</codepython>'},
+            {value: '<red/>', template: '<red>Red</red>'},
+            {value: '<green/>', template: '<green>Green</green>'},
+            {value: '<blue/>', template: '<blue>Blue</blue>'},
+            {value: '<yellow/>', template: '<yellow>Yellow</yellow>'},
+            {value: '<purple/>', template: '<purple>Purple</purple>'},
+            
 
         ]
     );
