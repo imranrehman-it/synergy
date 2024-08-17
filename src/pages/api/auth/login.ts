@@ -22,7 +22,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse) => {
         } else {
             const content = '<H1>Welcome to Synergy!</H1>';
             const newUser = await createUser({ id, name, email, image });
-            const file = await createFile({ user_id: id, title: 'New File', content: content });
+            const file = await createFile({ user_id: id, title: 'New File', content: content, description: 'A new file created for you' });
             const data = { user: newUser, files: [file] };
             res.status(200).json(data);
         }

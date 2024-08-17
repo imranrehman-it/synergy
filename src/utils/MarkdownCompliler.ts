@@ -19,7 +19,7 @@ export const compileMarkdown = (markdown: string) => {
     markdown = TextColourCompiler(markdown);
 
     markdown = markdown.replace(/<link>([\s\S]*?)<\/link>/g, (_, content) => {
-      const [text, url] = content.split(',').map(part => part.trim());
+      const [text, url] = content.split(',').map((part: string) => part.trim());
       return `[${text}](${url})`;
     });
 
