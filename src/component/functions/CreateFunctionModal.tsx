@@ -6,9 +6,10 @@ import rehypeHighlight from 'rehype-highlight'
 import rehypeRaw from 'rehype-raw'
 import { compileMarkdown } from '@/utils/MarkdownCompliler'
 
+const defaultMarkdown = `<bf><red>{content}</red></bf>`
 
-const CreateFunctionModal = ({addNewFunction} : (value: string, template:string) => void) => {
-    const [markdown, setMarkdown] = useState(`<H1>Heading 1</H1>`);
+const CreateFunctionModal = ({addNewFunction, setShowModal} : {addNewFunction: (value: string, template:string) => void, setShowModal: (arg0: boolean)=>void})=> {
+    const [markdown, setMarkdown] = useState(defaultMarkdown);
     const [functionTag, setFunctionTag] = useState('');
 
   return (
@@ -17,16 +18,20 @@ const CreateFunctionModal = ({addNewFunction} : (value: string, template:string)
             <h1 className="text-xl font-semibold text-white">Create new function</h1>
             <div className="flex flex-row gap-2 w-full h-full">
                 <div className='flex flex-col w-1/2 h-full gap-2'>
-                <textarea 
-                    className=" bg-black
-                     h-full rounded-md text-white p-4 text-sm leading-relaxed font-mono focus:outline-none focus:none focus:ring-blue-500 resize-none font-bold" 
-                    value={markdown}
-                    onChange={(e)=>setMarkdown(e.target.value)} 
-                />
-                <div className='flex flex-row w-full'>
-                    <input onChange={(e)=>setFunctionTag(e.target.value)} type="text" placeholder="Function Tag ie <newfunction>" className="bg-black rounded-md text-white p-4 text-sm leading-relaxed font-mono focus:outline-none focus:none focus:ring-blue-500 resize-none font-bold"/>  
-                    <button onClick={()=>addNewFunction(functionTag, markdown)} className='bg-green-400 text-white p-2 rounded-md'>Add</button>
-                </div>
+                    <textarea 
+                        className=" bg-black
+                        h-full rounded-md text-white p-4 text-sm leading-relaxed font-mono focus:outline-none focus:none focus:ring-blue-500 resize-none font-bold" 
+                        value={markdown}
+                        onChange={(e)=>setMarkdown(e.target.value)} 
+                    />
+                    <div className='flex flex-row w-full gap-2'>
+                        <input onChange={(e)=>setFunctionTag(e.target.value)} type="text" placeholder="Tag Name ie. boldred" className="w-full bg-black rounded-md text-white p-4 text-sm leading-relaxed font-mono focus:outline-none focus:none focus:ring-blue-500 resize-none font-bold"/> 
+                        <div className='flex flex-col w-[10%] gap-2'>
+                            <button onClick={()=>addNewFunction(functionTag, markdown)} className='bg-green-400 text-white h-1/2   rounded-md'>Add</button>
+                            <button onClick={()=>setShowModal(false)} className='bg-red-400 text-white h-1/2   rounded-md'> x</button>
+                        </div> 
+                        
+                    </div>
 
                 </div>
                

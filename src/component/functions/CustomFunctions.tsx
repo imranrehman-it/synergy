@@ -9,7 +9,7 @@ import CreateFunctionModal from './CreateFunctionModal';
 import { addFunction } from '@/utils/MarkdownCompliler';
 
 const CustomFunctions = ({setMarkdown} : {setMarkdown: (arg0: string) => void}) => {
-    const [close, setClose] = useState(true);
+    const [showModal, setShowModal] = useState(false);
 
     const [functionList, setFunctionList] = useState(
         [
@@ -41,13 +41,13 @@ const CustomFunctions = ({setMarkdown} : {setMarkdown: (arg0: string) => void}) 
         const tag = `<${value}/>`;
         addFunction(value, template);
         setFunctionList(prev => [...prev, {value: tag, template: template}]);
-        setClose(false);
+        setShowModal(false);
     }
     
 
   return (
     <div className="flex flex-col h-[30%] w-full bg-gray-800 p-2">
-    {close && <CreateFunctionModal addNewFunction={addNewFunction} />}
+    {showModal && <CreateFunctionModal addNewFunction={addNewFunction} setShowModal={setShowModal} />}
     <div className='flex flex-row bg-gray-700 h-10 rounded-t-lg items-center p-2 w-full'>
         <div className='absolute flex flex-row gap-2'>
           <RiExpandLeftLine className='text-white text-md cursor-pointer bg-red-400 rounded-lg'/>
@@ -60,6 +60,9 @@ const CustomFunctions = ({setMarkdown} : {setMarkdown: (arg0: string) => void}) 
             {functionList.map((func) => (
                 <FunctionIcon key={func.value} value={func.value} template={func.template} setMarkdown={setMarkdown}/>
             ))}
+             <div  onClick={()=>setShowModal(true)}className='min-w-12 h-12 rounded-md bg-green-700 flex items-center cursor-pointer px-1'>
+                <p className='text-xs text-white font-bold w-full text-center '>Create</p>
+            </div>
         </div>
     </div>
   )
