@@ -155,7 +155,9 @@ export default function Page() {
                 <FiSave className='text-white text-md cursor-pointer bg-green-400 rounded-lg' onClick={saveFile}/>
               </div>
                <p className='text-white font-bold w-full text-center'>{title}</p>
-               {!saved  ? (<Circles color='#ffffff' height="20" width="20"/>) : (<p className='text-gray-400 text-sm'>Saved</p>)}
+               <div className='w-12 flex flex-row justify-end'>
+                {!saved  ? (<Circles color='#ffffff' height="20" width="20"/>) : (<p className='text-gray-400 text-sm'>Saved</p>)}
+               </div>
             </div>
             
             <textarea 
