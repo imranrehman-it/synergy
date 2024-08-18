@@ -1,5 +1,6 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 import { RiExpandLeftLine, RiExpandRightLine } from 'react-icons/ri';
 import { FiSave } from 'react-icons/fi';
@@ -10,6 +11,7 @@ import { addFunction } from '@/utils/MarkdownCompliler';
 
 const CustomFunctions = ({setMarkdown} : {setMarkdown: (arg0: string) => void}) => {
     const [showModal, setShowModal] = useState(false);
+    const { data: session, status } = useSession();
 
     const [functionList, setFunctionList] = useState(
         [
@@ -36,12 +38,67 @@ const CustomFunctions = ({setMarkdown} : {setMarkdown: (arg0: string) => void}) 
         ]
     );
 
+    useEffect(() => {
+        const fetchFunctions = async () =>{
+            const user_id = session?.user?.additionalData?.user?.id;
+            if(!user_id){
+                return;
+            }
+            try{
+                const result = await fetch(`/api/getuserfunctions`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        user_id: user_id,
+                    }),
+                }) ;
+                const data = await result.json();
+                for(const func of data){
+                    addNewFunction(func.value, func.template);
+                }
+            }catch(err){
+                console.log(err);
+            }
+
+            
+        }
+        fetchFunctions();
+    }, [session]);
+
     const addNewFunction = (value: string, template: string) => {
         console.log('value', value, template);
         const tag = `<${value}/>`;
+        const res = addFunctionDb({value: value, template: template});
+        console.log('res', res);
         addFunction(value, template);
         setFunctionList(prev => [...prev, {value: tag, template: template}]);
         setShowModal(false);
+    }
+
+    const addFunctionDb = async ({value, template}: {value: string, template: string}) => {
+        const user_id = session?.user?.additionalData?.user?.id
+        console.log('user_id', user_id);
+        try{
+            const result = await fetch('/api/createfunction', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    user_id: user_id,
+                    value: value,
+                    template: template,
+                }),
+            })
+
+            const data = await result.json();
+            return data;
+
+        }catch(err){
+
+        }
     }
     
 
