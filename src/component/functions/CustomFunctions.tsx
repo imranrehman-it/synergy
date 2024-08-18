@@ -58,7 +58,8 @@ const CustomFunctions = ({setMarkdown, session} : {setMarkdown: (arg0: string) =
                 }) ;
                 const data = await result.json();
                 for(const func of data){
-                    addNewFunction(func.value, func.template);
+                    addFunction(func.value, func.template);
+                    setFunctionList(prev => [...prev, {value: `<${func.value}/>`, template: func.template}]);
                 }
             }catch(err){
                 console.log(err);
