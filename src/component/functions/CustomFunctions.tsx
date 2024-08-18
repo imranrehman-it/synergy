@@ -56,12 +56,14 @@ const CustomFunctions = ({setMarkdown} : {setMarkdown: (arg0: string) => void}) 
         </div>
          <p className='text-white font-bold w-full text-center'>Custom Function</p>
         </div>
-        <div className="w-full h-full bg-black flex flex-wrap p-2 gap-2 mb-2 rounded">
+        <div className="w-full h-full bg-black">
+            <div className="flex flex-wrap p-2 gap-2 mb-2 rounded">
             {functionList.map((func) => (
                 <FunctionIcon key={func.value} value={func.value} template={func.template} setMarkdown={setMarkdown}/>
             ))}
-             <div  onClick={()=>setShowModal(true)}className='min-w-12 h-12 rounded-md bg-green-700 flex items-center cursor-pointer px-1'>
-                <p className='text-xs text-white font-bold w-full text-center '>Create</p>
+             <div  onClick={()=>setShowModal(true)}className='min-w-12 h-12 rounded-sm bg-green-700 flex items-center cursor-pointer px-1'>
+                <p className='text-xs text-white font-bold w-full text-center '>➕</p>
+            </div>
             </div>
         </div>
     </div>
