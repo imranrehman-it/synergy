@@ -7,7 +7,7 @@ const FunctionIcon = ({value, template, setMarkdown}: {value: string, template: 
     }
 
   return (   
-    <div onClick={insertTemplate} className='min-w-12 h-12 rounded-sm bg-gray-700 flex items-center cursor-pointer px-1'>
+    <div onClick={insertTemplate} className='min-w-12 h-12 rounded-sm bg-gray-700 flex items-center cursor-pointer px-1 hover:bg-gray-600'>
     <p className='text-xs text-white font-bold w-full text-center '>{value}</p>
   </div>
   )

@@ -17,6 +17,7 @@ import { Circles } from 'react-loader-spinner'
 
 import SideBar from '../component/SideBar';
 import CustomFunctions from '../component/functions/CustomFunctions';
+import MarkdownExportModal from '@/component/main/MarkdownExportModal';
 import { time } from 'console';
 
 
@@ -47,8 +48,8 @@ export default function Page() {
   
     ## Overview
     ...`);
-
   const [saved, setSaved] = useState(true);
+  const [showExportModal, setShowExportModal] = useState(false);
 
   useEffect(() => {
     if (status === 'unauthenticated') {
@@ -146,6 +147,7 @@ export default function Page() {
     <div className="w-screen h-screen flex flex-row">
       <div className='flex flex-row w-full h-full'>
         <SideBar setCurrentlySelectedFileHandler={setCurrentlySelectedFileHandler} files={files} />
+        {showExportModal && <MarkdownExportModal markdown={compileMarkdown(markdown)} setShowExportModal={setShowExportModal}/>}
         <div className="w-full h-full overflow-scroll flex flex-col">
           <div className='flex flex-col w-full h-full bg-gray-800 p-2'>
             <div className='flex flex-row bg-gray-700 h-10 rounded-t-lg items-center p-2'>
@@ -176,7 +178,7 @@ export default function Page() {
               <div className='absolute flex flex-row gap-2'>
                 <RiExpandLeftLine className='text-white text-md cursor-pointer bg-red-400 rounded-lg'/>
                 <RiExpandRightLine className='text-white text-md cursor-pointer bg-blue-400 rounded-lg'/>
-                <FiSave className='text-white text-md cursor-pointer bg-green-400 rounded-lg' onClick={saveFile}/>
+                <FiSave className='text-white text-md cursor-pointer bg-green-400 rounded-lg' onClick={()=>setShowExportModal(true)}/>
               </div>
                <p className='text-white font-bold w-full text-center'>Markdown Render</p>
             </div>
