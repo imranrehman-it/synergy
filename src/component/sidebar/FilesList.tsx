@@ -4,13 +4,7 @@ import { RiExpandLeftLine, RiExpandRightLine } from 'react-icons/ri';
 import { FiPlusCircle } from "react-icons/fi";
 import { BsThreeDots } from "react-icons/bs";
 
-interface File {
-  id: string;
-  title: string;
-  description: string;
-  content: string;
-  
-}
+
 
 
 const FilesList = ({setCurrentlySelectedFile, setShowCreateFileModal, files}: {setCurrentlySelectedFile: (file: File) => void, setShowCreateFileModal: (arg0: boolean)=>void, files: File[]}) => {

@@ -9,11 +9,32 @@ import FilesList from './sidebar/FilesList';
 import ProfileSection from './sidebar/ProfileSection';
 import CreateNewFileModal from './sidebar/CreateNewFileModal';
 
+interface CustomSession {
+    user: {
+        additionalData: {
+            user: {
+                id: string;
+            }
+        }
+    }
+}
+
+interface File {
+    id: string;
+    title: string;
+    description: string;
+    content: string;
+}
+
+
+
+
+
 const SideBar = ({setCurrentlySelectedFileHandler, files}: {setCurrentlySelectedFileHandler: (file: File) => void, files: File[]}) => {
   const [expand, setExpand] = useState(15);  
   const [isExpanded, setIsExpanded] = useState(true);
-  const { data: session, status } = useSession();
   const [showCreateFileModal, setShowCreateFileModal] = useState(false);
+  const {data: session} = useSession();
 
   
 

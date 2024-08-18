@@ -27,12 +27,12 @@ export default function Page() {
   const [userData, setUserData] = useState(null);
   const [files, setFiles] = useState(null);
   const [title, setTitle] = useState('');
+
   interface File {
     id: string;
     title: string;
     description: string;
     content: string;
-
   }
   
   const [currentlySelectedFile, setCurrentlySelectedFile] = useState<File | null>(null);

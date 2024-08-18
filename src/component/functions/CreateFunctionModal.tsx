@@ -8,9 +8,27 @@ import { compileMarkdown } from '@/utils/MarkdownCompliler'
 
 const defaultMarkdown = `<bf><red>{content}</red></bf>`
 
-const CreateFunctionModal = ({addNewFunction, setShowModal} : {addNewFunction: (value: string, template:string) => void, setShowModal: (arg0: boolean)=>void})=> {
+interface Function {
+    value: string;
+    template: string;
+}
+
+const CreateFunctionModal = ({addNewFunction, setShowModal, functionList} : {addNewFunction: (value: string, template:string) => void, setShowModal: (arg0: boolean)=>void, functionList: Function[] })=> {
     const [markdown, setMarkdown] = useState(defaultMarkdown);
     const [functionTag, setFunctionTag] = useState('');
+    const [invalid, setInvalid] = useState(false);
+
+    const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setFunctionTag(e.target.value);
+        functionList.forEach((item)=>{
+            if(item.value ===  `<${e.target.value}/>`){
+                setInvalid(true);
+            }
+            else{
+                setInvalid(false);
+            }
+        })
+    }
 
   return (
      <div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center'>
@@ -24,14 +42,15 @@ const CreateFunctionModal = ({addNewFunction, setShowModal} : {addNewFunction: (
                         value={markdown}
                         onChange={(e)=>setMarkdown(e.target.value)} 
                     />
+                    {invalid ? <p className='text-red-400 text-xs'>Tag already exists</p> : <p className='text-green-400 text-xs'>{`<${functionTag}/></${functionTag}>`}</p>}
                     <div className='flex flex-row w-full gap-2'>
-                        <input onChange={(e)=>setFunctionTag(e.target.value)} type="text" placeholder="Tag Name ie. boldred" className="w-full bg-black rounded-md text-white p-4 text-sm leading-relaxed font-mono focus:outline-none focus:none focus:ring-blue-500 resize-none font-bold"/> 
+                        <input onChange={(e)=>inputHandler(e)} type="text" placeholder="Tag Name ie. boldred" className="w-full bg-black rounded-md text-white p-4 text-sm leading-relaxed font-mono focus:outline-none focus:none focus:ring-blue-500 resize-none font-bold"/> 
                         <div className='flex flex-col w-[10%] gap-2'>
-                            <button onClick={()=>addNewFunction(functionTag, markdown)} className='bg-green-400 text-white h-1/2   rounded-md'>Add</button>
+                            <button disabled={invalid} onClick={()=>addNewFunction(functionTag, markdown)} className='bg-green-400 text-white h-1/2 rounded-md'>Add</button>
                             <button onClick={()=>setShowModal(false)} className='bg-red-400 text-white h-1/2   rounded-md'> x</button>
                         </div> 
-                        
                     </div>
+                    
 
                 </div>
                

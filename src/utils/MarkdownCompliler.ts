@@ -6,7 +6,12 @@ import ListCompiler from '../../src/utils/ListCompiler';
 import TableCompiler from '../../src/utils/TableCompiler';
 import TextColourCompiler from '../../src/utils/TextColourCompiler';
 
-let customFunctions = { 
+interface CustomFunction {
+    tag: string;
+    template: string;
+}
+
+let customFunctions  = { 
     'br': '<bf><red>{content}</red></bf>',
     'name': '<bf>Imran</bf>'
 };

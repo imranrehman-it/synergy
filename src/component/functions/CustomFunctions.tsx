@@ -10,7 +10,18 @@ import CreateFunctionModal from './CreateFunctionModal';
 import { addFunction } from '@/utils/MarkdownCompliler';
 import { Session } from 'inspector';
 
-const CustomFunctions = ({setMarkdown, session} : {setMarkdown: (arg0: string) => void, session: Session}) => {
+interface CustomSession {
+    user: {
+        additionalData: {
+            user: {
+                id: string;
+            }
+        }
+    }
+    
+}
+
+const CustomFunctions = ({setMarkdown, session} : {setMarkdown: (arg0: string) => void, session: CustomSession}) => {
     const [showModal, setShowModal] = useState(false);
     const fetchStatusRed = useRef(false);
 
@@ -107,7 +118,7 @@ const CustomFunctions = ({setMarkdown, session} : {setMarkdown: (arg0: string) =
 
   return (
     <div className="flex flex-col h-[30%] w-full bg-gray-800 p-2">
-    {showModal && <CreateFunctionModal addNewFunction={addNewFunction} setShowModal={setShowModal} />}
+    {showModal && <CreateFunctionModal addNewFunction={addNewFunction} setShowModal={setShowModal} functionList={functionList} />}
     <div className='flex flex-row bg-gray-700 h-10 rounded-t-lg items-center p-2 w-full'>
         <div className='absolute flex flex-row gap-2'>
           <RiExpandLeftLine className='text-white text-md cursor-pointer bg-red-400 rounded-lg'/>

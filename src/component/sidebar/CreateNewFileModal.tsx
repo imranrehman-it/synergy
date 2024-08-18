@@ -1,7 +1,8 @@
 'use client';
 import React, { useState } from 'react';
 
-const CreateNewFileModal = ({setShowCreateFileModal, createNewFile}: {setShowCreateFileModal: (arg0: boolean) => void, createNewFile: (title:string, description:string)=>File[]}) => {
+const CreateNewFileModal = ({setShowCreateFileModal, createNewFile}:
+  {setShowCreateFileModal: (arg0: boolean) => void, createNewFile: (title:string, description:string)=>Promise<void>}) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     return (

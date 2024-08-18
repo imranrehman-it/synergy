@@ -1,6 +1,6 @@
 import React from 'react'
 
-const FunctionIcon = ({value, template, setMarkdown}: {value: string, template: string, setMarkdown : (arg0: string)=> void}) => {
+const FunctionIcon = ({value, template, setMarkdown}: {value: string, template: string, setMarkdown : (arg0: string) => string}) => {
 
     const insertTemplate = () => {
         setMarkdown(prev => prev + `\n${template}`);
