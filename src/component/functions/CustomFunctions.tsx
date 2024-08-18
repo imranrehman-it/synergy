@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 
@@ -8,10 +8,11 @@ import { FiSave } from 'react-icons/fi';
 import FunctionIcon from './FunctionIcon';
 import CreateFunctionModal from './CreateFunctionModal';
 import { addFunction } from '@/utils/MarkdownCompliler';
+import { Session } from 'inspector';
 
-const CustomFunctions = ({setMarkdown} : {setMarkdown: (arg0: string) => void}) => {
+const CustomFunctions = ({setMarkdown, session} : {setMarkdown: (arg0: string) => void, session: Session}) => {
     const [showModal, setShowModal] = useState(false);
-    const { data: session, status } = useSession();
+    const fetchStatusRed = useRef(false);
 
     const [functionList, setFunctionList] = useState(
         [
@@ -41,9 +42,10 @@ const CustomFunctions = ({setMarkdown} : {setMarkdown: (arg0: string) => void}) 
     useEffect(() => {
         const fetchFunctions = async () =>{
             const user_id = session?.user?.additionalData?.user?.id;
-            if(!user_id){
+            if(!user_id || fetchStatusRed.current){
                 return;
             }
+            fetchStatusRed.current = true;
             try{
                 const result = await fetch(`/api/getuserfunctions`, {
                     method: 'POST',

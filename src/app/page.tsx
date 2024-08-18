@@ -168,7 +168,7 @@ export default function Page() {
               onChange={(e)=>setMarkdown(e.target.value)} 
             />
           </div>
-          <CustomFunctions setMarkdown={setMarkdown} />
+          <CustomFunctions setMarkdown={setMarkdown} session={session} />
 
 
         </div>
