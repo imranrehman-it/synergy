@@ -13,7 +13,7 @@
   - [Text Colors](#text-colors)
   - [Code Segments](#code-segments)
   - [Lists and Tables](#lists-and-tables)
-  - [Creating Custom Components](#creating-custom-components)
+  - `Creating Custom Components`
 
 
 
