@@ -52,4 +52,4 @@ Below is a demonstration of custom component creation, showcasing Synergy's capa
 
 ![Custom Components](https://github.com/imranrehman-it/synergy/blob/main/public/customcomponent.gif)
 
-cscd08h3-10055511623
+
