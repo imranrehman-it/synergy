@@ -51,3 +51,5 @@ At its core, Synergy is designed to empower users to create <span style="color:g
 Below is a demonstration of custom component creation, showcasing Synergy's capabilities to enhance your markdown experience.
 
 ![Custom Components](https://github.com/imranrehman-it/synergy/blob/main/public/customcomponent.gif)
+
+cscd08h3-10055511623
